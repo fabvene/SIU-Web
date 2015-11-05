@@ -2,18 +2,6 @@ library(RGoogleAnalytics)
 library(lubridate)
 library(RForcecom)
 
-#############################################################################################
-
-# REM: OVERWRITES values !! (should do only empty fields, instead) ##########################
-
-#############################################################################################
-
-#oauth_token <- Auth(client.id = "387545337049-qoon4gdvbqr2fe9l4cti4qs19sptat2p.apps.googleusercontent.com",client.secret = "xnPrepkF2vDBEcWenP56jiox")
-# Save the token object for future sessions
-#save(oauth_token, file="oauth_token")
-
-# Token -------------------------------------------------------------------
-
 
 # Load the token object
 load("../oauth_token")
