@@ -1,0 +1,85 @@
+---
+title: "Big Book of Data Analysis"
+author: "Fabrizio Veneziano"
+date: "Wednesday, May 06, 2015"
+output: html_document
+---
+
+```{r cache=T, echo=FALSE}
+source('../LeadsLoader.R')
+```
+
+```{r echo=F}
+source('GA_Loader.R')
+```
+
+
+# Where do our students come from?   
+  
+  
+### NOTE: 'Student' = REG
+
+
+
+```{r echo=F,}
+#dat <- all.leads[as.Date(all.leads$CreatedDate)>"2014-03-01",]
+dat <- all.leads
+dat$online <- ifelse(dat$LeadSource %in% c("Paris Website","Madrid Website","Heidelberg Website","Schiller.edu Website"),"Online","Offline")
+
+# All leads
+# aggregate(Id~online,data=dat, length)
+online.all <- table(dat$online)
+online.all.prop <- round(prop.table(table(dat$online)),2)
+# online.all.plot <- barplot(table(dat$online))
+
+# REG only
+# aggregate(Id~online,data=dat[dat$Status=="REG",], length)
+online.REG <- table(dat$online[dat$Status=="REG"])
+online.REG.prop <- round(prop.table(table(dat$online[dat$Status=="REG"])),2)
+
+```
+
+According to our Salesforce database, out of `r sum(online.REG)` SIU Students (European Campuses only), `r online.REG.prop[2]*100`% come from an **online source**.
+
+```{r echo=F}
+online.REG.plot <- barplot(table(dat$online[dat$Status=="REG"]),col=c("darkblue","darkred"), main="Students (REG) by Source Type")
+grid()
+text(0.75,280,paste(online.REG.prop[1]*100,"%"), col="white")
+text(1.85,280,paste(online.REG.prop[2]*100,"%"), col="black")
+
+```
+
+In theory, the `r online.REG[2]` students who reach us via our websites, could be broken down in **channels**, that is possible ways users have of landing on a website. These are industry standard categories (Google flavors, at least), and range from visits from search engine to visits initiated by a mass emailing from our Admission Dept. However, both for technical and legal reasons^[Google Analytics sometimes simply is unable to register such information. Moreover, privacy considerations may discorage us from tracking users too closely.], it's not always easy to inject such information from Google Analytics into Salesforce, and in fact the information available to us in this sense is partial and only `r sum(table(dat$Campaign_Medium__c[dat$Status=="REG"]))` students (REG) out of `r sum(online.REG)` can be assigned to a web channel.  
+  
+On the other hand, What we can do, is widen our viewpoint and extend it to (web)lead rather than stricly students (REG). In this latter case
+
+```{r}
+
+PA.channels <- aggregate(sessions~medium,data=GA.paris,sum)
+PA.channels <- subset(PA.channels, PA.channels$sessions > 10)
+
+```
+
+
+
+
+  *  Global
+    *  Paris
+    *  Madrid
+    *  Heidelberg
+
+# Typical profile(s) of REG
+- demographic
+- behavior on site (time, pageviews, etc)
+
+# Notable profile(s) of almost REG and of almost leads
+Are there sizeable groups of users who:
+- Send info request but do not become REG or Qualified?
+- Land on the website(s) but do not fill the form?
+
+
+```{r}
+
+```
+
+
