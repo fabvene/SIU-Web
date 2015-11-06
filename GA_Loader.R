@@ -4,7 +4,7 @@ library(RForcecom)
 
 
 # Load the token object
-load("../oauth_token")
+load("oauth_token")
 
 profiles <- GetProfiles(oauth_token)
 
